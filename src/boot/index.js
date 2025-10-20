@@ -4,29 +4,29 @@ const DEV = true; // só p/ seu build local
 if (!window.__btInit) {
   window.__btInit = true;
 
-  const host = location.hostname;
-
-  // Allowlist opcional e configurável:
-  // - Defina window.__btAllowHosts = ["www.mizz.com.br", ...]
-  // - Ou use data-allow-hosts no <script>: data-allow-hosts="a.com,b.com"
-  let allowHosts = null;
-  if (Array.isArray(window.__btAllowHosts)) {
-    allowHosts = window.__btAllowHosts;
-  }
-  const currentScript = document.currentScript;
-  if (!allowHosts && currentScript && currentScript.getAttribute) {
-    const attr = currentScript.getAttribute("data-allow-hosts");
-    if (attr) allowHosts = attr.split(",").map((s) => s.trim()).filter(Boolean);
-  }
-
-  // Sem allowlist definida => libera em qualquer domínio
-  if (allowHosts && !allowHosts.includes(host)) {
-    console.warn("[bt-core] Domínio não autorizado:", host);
-    // Se quiser apenas aviso sem bloquear, comente o return abaixo
-    return;
-  }
-
   (async () => {
+    const host = location.hostname;
+
+    // Allowlist opcional e configurável:
+    // - Defina window.__btAllowHosts = ["www.mizz.com.br", ...]
+    // - Ou use data-allow-hosts no <script>: data-allow-hosts="a.com,b.com"
+    let allowHosts = null;
+    if (Array.isArray(window.__btAllowHosts)) {
+      allowHosts = window.__btAllowHosts;
+    }
+    const currentScript = document.currentScript;
+    if (!allowHosts && currentScript && currentScript.getAttribute) {
+      const attr = currentScript.getAttribute("data-allow-hosts");
+      if (attr) allowHosts = attr.split(",").map((s) => s.trim()).filter(Boolean);
+    }
+
+    // Sem allowlist definida => libera em qualquer domínio
+    if (allowHosts && !allowHosts.includes(host)) {
+      console.warn("[bt-core] Domínio não autorizado:", host);
+      // Se quiser apenas aviso sem bloquear, comente o return abaixo
+      return;
+    }
+
     try {
       // Aplique marcador de tenant (ajuste via manifesto no futuro)
       document.documentElement.setAttribute("data-bt", "mizz");
@@ -67,4 +67,3 @@ if (!window.__btInit) {
     }
   })();
 }
-

@@ -1,16 +1,20 @@
-import { defineConfig } from "vite";
+// vite.config.js
+import { defineConfig } from 'vite';
 
-export default {
+export default defineConfig({
   build: {
     outDir: 'dist',
+    emptyOutDir: true,
     rollupOptions: {
-      input: { boot: 'src/boot.ts' }, // seu entry real
+      // ✅ seu boot real:
+      input: { boot: 'src/boot/index.js' },
       output: {
         entryFileNames: 'bt-boot.v2.js',
-        // se gerar CSS via JS, force nome também:
-        assetFileNames: (info) => info.name === 'style' ? 'bt-boot.v2.css' : 'assets/[name][extname]'
+        chunkFileNames: 'chunks/[name].js',
+        assetFileNames: 'assets/[name][extname]',
+        format: 'iife',
+        name: 'BTBoot'
       }
     }
   }
-}
-
+});
