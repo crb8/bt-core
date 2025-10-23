@@ -32,7 +32,7 @@ if (!window.__btInit) {
       document.documentElement.setAttribute("data-bt", "mizz");
 
       // Carregar CSS base (tema base opcional)
-      const baseCss = new URL("../../src/theme/base.css", import.meta.url).href;
+      const baseCss = new URL("/bt/base.css", import.meta.url).href;
       const pre = Object.assign(document.createElement("link"), {
         rel: "preload",
         as: "style",
