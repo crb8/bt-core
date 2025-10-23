@@ -1,19 +1,76 @@
 /* Base mínima e segura — sem !important */
 :root[data-bt] {
-  --bt-bg:#0f1115; --bt-surface:#151922; --bt-text:#e9edf5; --bt-border:#2a3240;
-  --bt-primary:#b26ef0; --bt-link:#8ab4f8;
+  --bt-bg: #0f1115;
+  --bt-surface: #151922;
+  --bt-text: #e9edf5;
+  --bt-border: #2a3240;
+  --bt-primary: #b26ef0;
+  --bt-link: #8ab4f8;
 }
-:root[data-bt], :root[data-bt] body{ background:var(--bt-bg); color:var(--bt-text); }
+
+:root[data-bt],
+:root[data-bt] body {
+  background: var(--bt-bg);
+  color: var(--bt-text);
+}
 
 /* Blocos comuns */
-:root[data-bt] .bt-faq { margin: 24px 0; }
-:root[data-bt] .bt-faq__title { font: 600 1.25rem/1.4 system-ui; margin-bottom:.75rem; }
-:root[data-bt] .bt-faq__item { background:var(--bt-surface); border:1px solid var(--bt-border); border-radius:12px; padding:.75rem 1rem; margin:.5rem 0; }
+:root[data-bt] .bt-faq {
+  margin: 24px 0;
+}
 
-:root[data-bt] .bt-carousel { position:relative; overflow:hidden; border:1px solid var(--bt-border); border-radius:16px; }
-:root[data-bt] .bt-carousel__item { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem; gap:.5rem; background:var(--bt-surface); }
-:root[data-bt] .bt-carousel__text { font-size:1.125rem; }
+:root[data-bt] .bt-faq__title {
+  font: 600 1.25rem/1.4 system-ui;
+  margin-bottom: .75rem;
+}
+
+:root[data-bt] .bt-faq__item {
+  background: var(--bt-surface);
+  border: 1px solid var(--bt-border);
+  border-radius: 12px;
+  padding: .75rem 1rem;
+  margin: .5rem 0;
+}
+
+:root[data-bt] .bt-carousel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--bt-border);
+  border-radius: 16px;
+}
+
+:root[data-bt] .bt-carousel__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: .5rem;
+  background: var(--bt-surface);
+}
+
+:root[data-bt] .bt-carousel__text {
+  font-size: 1.125rem;
+}
+
 :root[data-bt] .bt-carousel__prev,
-:root[data-bt] .bt-carousel__next { position:absolute; top:50%; transform:translateY(-50%); border:none; background:rgba(0,0,0,.2); color:#fff; width:40px; height:40px; border-radius:50%; cursor:pointer; }
-:root[data-bt] .bt-carousel__prev { left:8px; }
-:root[data-bt] .bt-carousel__next { right:8px; }
+:root[data-bt] .bt-carousel__next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgb(0 0 0 / 20%);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+:root[data-bt] .bt-carousel__prev {
+  left: 8px;
+}
+
+:root[data-bt] .bt-carousel__next {
+  right: 8px;
+}

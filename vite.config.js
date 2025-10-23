@@ -1,19 +1,18 @@
-// vite.config.js
+// vite.config.js (bt-core)
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    assetsInlineLimit: 0, // evita inline e 'import.meta.url' desnecessário
     rollupOptions: {
-      // ✅ seu boot real:
       input: { boot: 'src/boot/index.js' },
       output: {
-        entryFileNames: 'bt-boot.v2.js',
+        format: 'es',                 // <- módulo ES (resolve import.meta)
+        entryFileNames: 'bt-boot.v2.js',  // <- nome fixo
         chunkFileNames: 'chunks/[name].js',
-        assetFileNames: 'assets/[name][extname]',
-        format: 'iife',
-        name: 'BTBoot'
+        assetFileNames: 'assets/[name][extname]'
       }
     }
   }

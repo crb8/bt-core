@@ -1,46 +1,65 @@
-name: Build & Publish to jsDelivr
+name: Build Core Dist
+
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+    paths:
+      - 'bt-core/**'
+      - '!bt-core/dist/**'
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: bt-core-build
+  cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-commit:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bt-core
     steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - uses: actions/cache@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: ${{ runner.os }}-npm-
-      - run: npm ci
-      - run: npm run build
-      - name: Commit dist if changed
-        id: commitdist
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: bt-core/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Ensure dist exists
         run: |
-          git config user.name  "github-actions[bot]"
+          test -f dist/bt-boot.v2.js || {
+            echo 'Expected file dist/bt-boot.v2.js not found.'
+            exit 1
+          }
+
+      - name: Commit dist (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist || true
-          if ! git diff --quiet --cached; then
-            git commit -m "auto(build): update dist [skip ci]"
-            echo "changed=true" >> $GITHUB_OUTPUT
+          git add -A dist
+          if git diff --staged --quiet; then
+            echo "No dist changes to commit."
           else
-            echo "changed=false" >> $GITHUB_OUTPUT
+            git commit -m "build(core): update dist [skip ci]"
+            git push
           fi
-      - name: Push back to main (if any change)
-        if: steps.commitdist.outputs.changed == 'true'
-        run: git push
-      - name: Purge jsDelivr cache
-        if: steps.commitdist.outputs.changed == 'true'
+
+      - name: Summary
         run: |
-          curl -s "https://purge.jsdelivr.net/gh/crb8/bt-core@main/dist/bt-boot.v2.js"
+          echo "Dist pronto. Crie uma tag (ex.: v2.0.1) apontando para este commit para servir via jsDelivr."
+
