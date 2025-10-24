@@ -28,8 +28,18 @@ if (!window.__btInit) {
     }
 
     try {
-      // Aplique marcador de tenant (ajuste via manifesto no futuro)
-      document.documentElement.setAttribute("data-bt", "mizz");
+      // Detectar tenant baseado no domínio
+      let tenant = "mizz"; // padrão
+      if (host.includes("mahsunkids")) {
+        tenant = "mahsunkids";
+      } else if (host.includes("danajalecos")) {
+        tenant = "danajalecos";
+      } else if (host.includes("mizz")) {
+        tenant = "mizz";
+      }
+      
+      // Aplique marcador de tenant
+      document.documentElement.setAttribute("data-bt", tenant);
 
       // Carregar CSS base (tema base opcional)
       const baseCss = new URL("/bt/base.css", import.meta.url).href;
@@ -60,7 +70,7 @@ if (!window.__btInit) {
           return;
         }
         const mod = await import(modUrl);
-        if (typeof mod.mount === "function") mod.mount(el, { tenant: "mizz", host });
+        if (typeof mod.mount === "function") mod.mount(el, { tenant, host });
       });
     } catch (err) {
       console.error("[bt-core] boot error:", err);
